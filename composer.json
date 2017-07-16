@@ -1,6 +1,6 @@
 {
   "name": "blakit/yii2-api",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Api starter for Yii2 projects",
   "type": "library",
   "license": "Open Source",
