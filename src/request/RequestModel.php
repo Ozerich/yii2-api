@@ -16,9 +16,9 @@ class RequestModel extends Model
         return [];
     }
 
-    public function load($data = null, $formName = null)
+    public function load($data = null, $formName = null, $post = true)
     {
-        $data = \Yii::$app->request->post();
+        $data = $post ? \Yii::$app->request->post() : \Yii::$app->request->get();
 
         $models = $this->models();
 
