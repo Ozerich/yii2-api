@@ -2,7 +2,9 @@
 
 namespace blakit\api\request;
 
+use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\validators\Validator;
 
 class RequestModel extends Model
 {
@@ -40,7 +42,6 @@ class RequestModel extends Model
         return $result;
     }
 
-
     public function validate($attributeNames = null, $clearErrors = true)
     {
         $result = parent::validate($attributeNames, $clearErrors);
@@ -68,11 +69,41 @@ class RequestModel extends Model
 
             foreach ($errors as $field => $field_errors) {
                 foreach ($field_errors as $error) {
-                    $ex->addError(new RequestError($field, $error));
+                    if (is_string($error)) {
+                        $error = new RequestError($field, $error);
+                    } else {
+                        $error = new RequestError($field, $error['message'], $error['code']);
+                    }
+
+                    $ex->addError($error);
                 }
             }
 
             throw $ex;
         }
+    }
+
+
+    /**
+     * Creates validator objects based on the validation rules specified in [[rules()]].
+     * Unlike [[getValidators()]], each time this method is called, a new list of validators will be returned.
+     * @return \ArrayObject validators
+     * @throws InvalidConfigException if any validation rule configuration is invalid
+     */
+    public function createValidators()
+    {
+        $validators = new \ArrayObject();
+        foreach ($this->rules() as $rule) {
+            if ($rule instanceof Validator) {
+                $validators->append($rule);
+            } elseif (is_array($rule) && isset($rule[0], $rule[1])) { // attributes, validator type
+                $validator = \blakit\api\validators\base\Validator::createValidator($rule[1], $this, (array)$rule[0], array_slice($rule, 2));
+                $validators->append($validator);
+            } else {
+                throw new InvalidConfigException('Invalid validation rule: a rule must specify both attribute names and validator type.');
+            }
+        }
+
+        return $validators;
     }
 }

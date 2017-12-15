@@ -24,7 +24,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
                 if (!isset($errors_by_field[$error->field])) {
                     $errors_by_field[$error->field] = [];
                 }
-                $errors_by_field[$error->field][] = $error->error;
+                $errors_by_field[$error->field][] = $error->toJSON();
             }
 
             $response->data = [
