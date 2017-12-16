@@ -3,6 +3,7 @@
 namespace blakit\api\request;
 
 
+use blakit\api\Module;
 use blakit\api\validators\base\ValidationError;
 
 class RequestError
