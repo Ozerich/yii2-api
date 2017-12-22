@@ -4,6 +4,7 @@ namespace blakit\api\errors;
 
 use blakit\api\request\InvalidRequestException;
 use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\web\ForbiddenHttpException;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
@@ -63,7 +64,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
                 'allowed' => json_decode($exception->getMessage())
             ];
             $response->send();
-        } else if ($exception instanceof ErrorException) {
+        } else if ($exception instanceof ErrorException or $exception instanceof Exception) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(500);
             $response->data = [
