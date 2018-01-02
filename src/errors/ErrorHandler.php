@@ -37,7 +37,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(401);
             $response->data = [
-                'error' => 'Not Unauthorized'
+                'error' => \Yii::t('api_errors', 'Unauthorized')
             ];
             $response->send();
 
@@ -45,7 +45,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(403);
             $response->data = [
-                'error' => 'Forbidden'
+                'error' => \Yii::t('api_errors', 'Forbidden')
             ];
             $response->send();
 
@@ -60,7 +60,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(405);
             $response->data = [
-                'error' => 'Method not allowed',
+                'error' => \Yii::t('api_errors','Method not allowed'),
                 'allowed' => json_decode($exception->getMessage())
             ];
             $response->send();
@@ -68,11 +68,10 @@ class ErrorHandler extends \yii\web\ErrorHandler
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(500);
             $response->data = [
-                'error' => 'Internal Server Error'
+                'error' => \Yii::t('api_errors', 'Internal Server Error')
             ];
 
             if (YII_DEBUG) {
-
                 $debug = [
                     'message' => $exception->getMessage(),
                     'file' => $exception->getFile() . ';  Line ' . $exception->getLine(),

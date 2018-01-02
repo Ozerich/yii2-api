@@ -11,6 +11,12 @@ class Module extends \yii\base\Module
 
     public $defaultErrorCode = ErrorCode::UNKNOWN_ERROR;
 
+    public $enableLocalization = false;
+
+    public $locales = ['ru-RU', 'en-US'];
+
+    public $defaultLocale = 'ru-RU';
+
     public function init()
     {
         $handler = new ErrorHandler();

@@ -2,12 +2,35 @@
 
 namespace blakit\api\controllers;
 
+use blakit\api\Module;
 use yii\filters\Cors;
+use yii\web\HeaderCollection;
 use yii\web\IdentityInterface;
 
 class Controller extends \yii\web\Controller
 {
     public $enableCsrfValidation = false;
+
+    public function beforeAction($action)
+    {
+        /** @var Module $module */
+        $module = \Yii::$app->controller->module;
+
+        if ($module->enableLocalization) {
+            /** @var HeaderCollection $headers */
+            $headers = \Yii::$app->request->headers;
+
+            $language = $headers->get('Accept-Language');
+
+            if (!in_array($language, $module->locales)) {
+                $language = $module->defaultLocale;
+            }
+
+            \Yii::$app->language = mb_strtolower($language);
+        }
+
+        return parent::beforeAction($action);
+    }
 
     public function behaviors()
     {
