@@ -13,9 +13,9 @@ class Module extends \yii\base\Module
 
     public $enableLocalization = false;
 
-    public $locales = ['ru-RU', 'en-US'];
+    public $locales = ['ru', 'en'];
 
-    public $defaultLocale = 'ru-RU';
+    public $defaultLocale = 'en';
 
     public function init()
     {

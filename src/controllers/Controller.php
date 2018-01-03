@@ -23,7 +23,15 @@ class Controller extends \yii\web\Controller
             $language = $headers->get('Accept-Language');
 
             if (!in_array($language, $module->locales)) {
-                $language = $module->defaultLocale;
+                if (strpos($language, '-') !== false) {
+                    $language = substr($language, 0, strpos($language, '-'));
+                    if (!in_array($language, $module->locales)) {
+                        $language = $module->defaultLocale;
+                    }
+                }
+                else{
+                    $language = $module->defaultLocale;
+                }
             }
 
             \Yii::$app->language = mb_strtolower($language);
