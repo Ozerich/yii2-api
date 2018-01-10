@@ -2,9 +2,29 @@
 
 namespace blakit\api;
 
+if (!function_exists('array_merge_recursive_ex')) {
+    function array_merge_recursive_ex(array & $array1, array & $array2)
+    {
+        $merged = $array1;
+
+        foreach ($array2 as $key => & $value) {
+            if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = array_merge_recursive_ex($merged[$key], $value);
+            } else if (is_numeric($key)) {
+                if (!in_array($value, $merged))
+                    $merged[] = $value;
+            } else
+                $merged[$key] = $value;
+        }
+
+        return $merged;
+    }
+}
+
 use blakit\api\constants\ErrorCode;
 use blakit\api\errors\ErrorHandler;
 use yii\i18n\I18N;
+use yii\i18n\PhpMessageSource;
 
 class Module extends \yii\base\Module
 {
@@ -22,6 +42,7 @@ class Module extends \yii\base\Module
     {
         $this->initI18n();
         $this->initErrorHandler();
+
         parent::init();
     }
 
@@ -36,38 +57,46 @@ class Module extends \yii\base\Module
 
     public function initI18n()
     {
-        $translations = [
-            '*' => [
-                'class' => 'yii\i18n\PhpMessageSource',
-                'sourceLanguage' => 'ru-RU',
-                'on missingTranslation' => [
-                    'blakit\api\errors\TranslationEventHandler',
-                    'handleMissingTranslation'
+        $new_i18n_config = [
+            'class' => I18N::className(),
+            'translations' => [
+                'api_errors' => [
+                    'class' => PhpMessageSource::className(),
+                    'sourceLanguage' => 'en',
+                    'basePath' => __DIR__ . '/messages'
                 ]
             ]
         ];
 
-        $isset_i18n = false;
-        foreach ($this->components as $key => $value) {
-            if (is_a($value, I18N::class)) {
-                $isset_i18n = true;
-                $this->components[$key]->translations = array_merge_recursive_ex($this->components[$key]->translations, $translations);
-            }
-            if ($isset_i18n) break;
+        if ($this->enableLocalization) {
+            $new_i18n_config['translations']['*'] = [
+                'class' => PhpMessageSource::className(),
+                'sourceLanguage' => $this->defaultLocale,
+                'on missingTranslation' => [
+                    'blakit\api\errors\TranslationEventHandler',
+                    'handleMissingTranslation'
+                ]
+            ];
         }
 
-        if (!$isset_i18n) {
-            $this->setComponents(['i18n' => [
-                'class' => I18N::className(),
-                'translations' => $translations,
-            ]]);
+        foreach (\Yii::$app->components as $key => $value) {
+            if (isset($value['class']) && $value['class'] == I18N::className()) {
+                $i18n_original_config = \Yii::$app->components[$key];
+                $new_i18n_config = array_merge_recursive_ex($i18n_original_config, $new_i18n_config);
+
+                return \Yii::$app->set($key, $new_i18n_config);
+            }
         }
+
+        return \Yii::$app->set('i18n', $new_i18n_config);
     }
 
     public function initErrorHandler()
     {
         $handler = new ErrorHandler();
+
         \Yii::$app->set('errorHandler', $handler);
+
         $handler->register();
     }
 }

@@ -20,7 +20,7 @@ class Controller extends \yii\web\Controller
             /** @var HeaderCollection $headers */
             $headers = \Yii::$app->request->headers;
 
-            $language = $headers->get('Accept-Language');
+            $language = mb_strtolower($headers->get('Accept-Language'));
 
             if (!in_array($language, $module->locales)) {
                 if (strpos($language, '-') !== false) {
