@@ -25,6 +25,7 @@ use blakit\api\constants\ErrorCode;
 use blakit\api\errors\ErrorHandler;
 use yii\i18n\I18N;
 use yii\i18n\PhpMessageSource;
+use yii\web\Response;
 
 class Module extends \yii\base\Module
 {
@@ -40,10 +41,12 @@ class Module extends \yii\base\Module
 
     public function init()
     {
+        parent::init();
+
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
         $this->initI18n();
         $this->initErrorHandler();
-
-        parent::init();
     }
 
     public function behaviors()
