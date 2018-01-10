@@ -80,7 +80,9 @@ class Module extends \yii\base\Module
         }
 
         foreach (\Yii::$app->components as $key => $value) {
-            if (isset($value['class']) && $value['class'] == I18N::className()) {
+            $check = is_array($value) ? (isset($value['class']) && $value['class'] == I18N::className()) : $value instanceof I18N;
+
+            if ($check) {
                 $i18n_original_config = \Yii::$app->components[$key];
                 $new_i18n_config = array_merge_recursive_ex($i18n_original_config, $new_i18n_config);
 
