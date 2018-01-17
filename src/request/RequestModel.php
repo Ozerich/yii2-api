@@ -18,16 +18,33 @@ class RequestModel extends Model
         return [];
     }
 
+    protected function ignoreFieldsIfNotSet()
+    {
+        return [];
+    }
+
+    private $data = [];
+
+    /**
+     * @param $attribute
+     * @return bool
+     */
+    public function issetAttribute($attribute)
+    {
+        return is_array($this->data) && isset($this->data[$attribute]);
+    }
+
     public function load($data = null, $formName = null, $post = true)
     {
         $data = $post ? \Yii::$app->request->post() : \Yii::$app->request->get();
+
+        $this->data = $data;
 
         $models = $this->models();
 
         foreach ($models as $model_field => $model_class) {
             $this->{$model_field} = \Yii::createObject($model_class);
         }
-
 
         foreach ($this->modelFields() as $model_field => $model_fields) {
             foreach ($model_fields as $field) {
@@ -42,14 +59,29 @@ class RequestModel extends Model
         return $result;
     }
 
+    private function needCheckAttribute($attribute)
+    {
+        return !in_array($attribute, $this->ignoreFieldsIfNotSet()) || isset($this->data[$attribute]);
+    }
+
+    public function activeAttributes()
+    {
+        return array_filter(parent::activeAttributes(), function ($attribute) {
+            return $this->needCheckAttribute($attribute);
+        });
+    }
+
     public function validate($attributeNames = null, $clearErrors = true)
     {
         $result = parent::validate($attributeNames, $clearErrors);
 
         foreach ($this->modelFields() as $model_field => $model_fields) {
-
             /** @var Model $model */
             $model = $this->{$model_field};
+
+            $model_fields = array_filter($model_fields, function ($field) {
+                return $this->needCheckAttribute($field);
+            });
 
             if (!$model->validate($model_fields)) {
 
@@ -62,6 +94,8 @@ class RequestModel extends Model
                 $result = false;
             }
         }
+
+
         if (!$result) {
             $errors = $this->getErrors();
 
@@ -82,7 +116,6 @@ class RequestModel extends Model
             throw $ex;
         }
     }
-
 
     /**
      * Creates validator objects based on the validation rules specified in [[rules()]].
