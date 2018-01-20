@@ -20,5 +20,13 @@
     "psr-4": {
       "blakit\\api\\": "src/"
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php ../../../yii migrate/up --migrationPath='@vendor/blakit/yii2-api/src/migrations' --interactive=0"
+    ],
+    "post-update-cmd": [
+      "php ../../../yii migrate/up --migrationPath='@vendor/blakit/yii2-api/src/migrations' --interactive=0"
+    ]
   }
 }
