@@ -13,8 +13,7 @@
     "php": ">=5.6.0",
     "yiisoft/yii2": "^2.0",
     "firebase/php-jwt": "^4.0",
-    "myclabs/php-enum": "^1.5",
-    "ivanovyordan/yii2-migration": "*"
+    "myclabs/php-enum": "^1.5"
   },
   "minimum-stability": "stable",
   "autoload": {
@@ -23,7 +22,7 @@
     }
   },
   "scripts": {
-    "post-install-cmd": "ivanovyordan\\migration\\Migration::migrate",
-    "post-update-cmd": "ivanovyordan\\migration\\Migration::migrate"
+    "post-install-cmd": "blakit\\api\\controllers\\MigrationController::migrate",
+    "post-update-cmd": "blakit\\api\\controllers\\MigrationController::migrate"
   }
 }
