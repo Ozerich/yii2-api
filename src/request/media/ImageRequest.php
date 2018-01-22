@@ -10,10 +10,15 @@ class ImageRequest extends RequestModel
     /** @var  UploadedFile */
     public $file;
 
+    private $dynamicRules = [];
+
     public function rules()
     {
-        return [
-            [['file'], 'file', 'skipOnEmpty' => false, 'maxSize' => 5 * 1024 * 1024, 'extensions' => 'png, jpg'],
-        ];
+        return $this->dynamicRules;
+    }
+
+    public function setFileRule($maxSize)
+    {
+        $this->dynamicRules[] = [['file'], 'file', 'skipOnEmpty' => false, 'maxSize' => $maxSize, 'extensions' => 'png, jpg'];
     }
 }
