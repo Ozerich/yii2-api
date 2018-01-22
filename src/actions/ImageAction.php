@@ -9,13 +9,14 @@ use yii\base\Action;
 class ImageAction extends Action {
     public $maxSize;
 
+    public $extensions;
+
     public function run()
     {
-        $this->maxSize = $this->maxSize ?? 5 * 1024 * 1024;
-
         $request = new ImageRequest();
-        $request->setMaxSizeFile($this->maxSize);
 
+        if ($this->maxSize) $request->maxSize = $this->maxSize;
+        if ($this->extensions) $request->extensions = $this->extensions;
         return UploadHelper::run($request, 'file');
     }
 }

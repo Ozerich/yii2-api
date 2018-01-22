@@ -145,8 +145,8 @@ class Image extends \yii\db\ActiveRecord
     public function getUploadDir()
     {
         $uploadDir = Yii::$app->controller->module->defaultUploadImagesDir;
-        $uploadDir = $uploadDir && $uploadDir[0] != '/' ?? '/' . $uploadDir;
-        $uploadDir = $uploadDir && $uploadDir[sizeof($uploadDir)-1] != '/' ?? $uploadDir . '/';
+        if ($uploadDir && $uploadDir[0] != '/') $uploadDir = '/' . $uploadDir;
+        if ($uploadDir && $uploadDir[sizeof($uploadDir)-1] != '/') $uploadDir .= '/';
         return $uploadDir;
     }
 

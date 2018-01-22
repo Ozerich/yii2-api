@@ -11,14 +11,15 @@ class MultipleImageAction extends Action {
 
     public $maxFiles;
 
+    public $extensions;
+
     public function run()
     {
-        $this->maxSize = $this->maxSize ?? 5 * 1024 * 1024;
-        $this->maxFiles = $this->maxFiles ?? 10;
-
         $request = new MultipleImageRequest();
-        $request->setMaxSizeFile($this->maxSize);
-        $request->setMaxFiles($this->maxFiles);
+
+        if ($this->maxSize) $request->maxSize = $this->maxSize;
+        if ($this->extensions) $request->extensions = $this->extensions;
+        if ($this->maxFiles) $request->maxFiles = $this->maxFiles;
 
         return UploadHelper::runMultiple($request, 'files');
     }
