@@ -108,7 +108,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getUploadsFolderSystemPath()
     {
-        return Yii::getAlias('@webroot') . Yii::$app->controller->module->defaultUploadImagesDir . $this->getUploadsFolderPath();
+        return Yii::getAlias('@webroot') . $this->getUploadDir() . $this->getUploadsFolderPath();
     }
 
     /**
@@ -117,7 +117,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getFilepath()
     {
-        return Yii::$app->controller->module->defaultUploadImagesDir . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
+        return $this->getUploadDir() . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
     }
 
     /**
@@ -126,7 +126,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getSystemPath()
     {
-        return $_SERVER['DOCUMENT_ROOT'] . Yii::$app->controller->module->defaultUploadImagesDir . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
+        return $_SERVER['DOCUMENT_ROOT'] . $this->getUploadDir() . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
     }
 
     /**
@@ -136,6 +136,18 @@ class Image extends \yii\db\ActiveRecord
     public function getUrl()
     {
         return Url::to($this->getFilepath(), true);
+    }
+
+    /**
+     * Get upload dir from module params
+     * @return string
+     */
+    public function getUploadDir()
+    {
+        $uploadDir = Yii::$app->controller->module->defaultUploadImagesDir;
+        $uploadDir = $uploadDir && $uploadDir[0] != '/' ?? '/' . $uploadDir;
+        $uploadDir = $uploadDir && $uploadDir[sizeof($uploadDir)-1] != '/' ?? $uploadDir . '/';
+        return $uploadDir;
     }
 
     /**
