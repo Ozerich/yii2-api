@@ -12,7 +12,9 @@ class MigrationController {
      * @return bool
      */
     public static function migrate($event) {
-        $migrationsDir = __DIR__ . '/../migrations';
+        $migrationsDir = explode('/', __DIR__);
+        unset($migrationsDir[sizeof($migrationsDir)-1]);
+        $migrationsDir = implode('/', $migrationsDir) . '/migrations';
 
         $prepare = array_reverse(explode('/', __DIR__));
         foreach ($prepare as $key => $value) {
@@ -22,7 +24,10 @@ class MigrationController {
         }
         unset($prepare[array_search('vendor', $prepare)]);
         $execFile = 'php '. implode('/', array_reverse($prepare)) . '/yii migrate --interactive=0 --migrationPath=\''.$migrationsDir.'\'';
-        exec($execFile);
+        $output = [];
+        exec($execFile, $output);
+
+        print implode("\n", $output);
 
         print 'Migrations Finished';
         return true;
