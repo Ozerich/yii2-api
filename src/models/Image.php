@@ -2,7 +2,6 @@
 
 namespace blakit\api\models;
 
-use blakit\api\constants\UploadDir;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -109,7 +108,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getUploadsFolderSystemPath()
     {
-        return Yii::getAlias('@webroot') . UploadDir::IMAGES . $this->getUploadsFolderPath();
+        return Yii::getAlias('@webroot') . Yii::$app->controller->module->defaultUploadImagesDir . $this->getUploadsFolderPath();
     }
 
     /**
@@ -118,7 +117,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getFilepath()
     {
-        return UploadDir::IMAGES . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
+        return Yii::$app->controller->module->defaultUploadImagesDir . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
     }
 
     /**
@@ -127,7 +126,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getSystemPath()
     {
-        return $_SERVER['DOCUMENT_ROOT'] . UploadDir::IMAGES . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
+        return $_SERVER['DOCUMENT_ROOT'] . Yii::$app->controller->module->defaultUploadImagesDir . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
     }
 
     /**

@@ -44,7 +44,7 @@ class m180120_135533_create_images_table extends Migration
                 'id'
             );
         } catch (\yii\db\Exception $e) {
-            print $e->getMessage();
+            print 'Warning: The database does not contain \'users\' table';
         }
     }
 
@@ -59,9 +59,7 @@ class m180120_135533_create_images_table extends Migration
                 'fk-images-user_id',
                 '{{%images}}'
             );
-        } catch (\yii\db\Exception $e) {
-            print $e->getMessage();
-        }
+        } catch (\yii\db\Exception $e) {}
 
         // drops index for column `user_id`
         $this->dropIndex(
