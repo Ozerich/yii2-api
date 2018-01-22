@@ -23,6 +23,8 @@
   },
   "scripts": {
     "post-install-cmd": "blakit\\api\\controllers\\MigrationController::migrate",
-    "post-update-cmd": "blakit\\api\\controllers\\MigrationController::migrate"
+    "post-update-cmd": "blakit\\api\\controllers\\MigrationController::migrate",
+    "post-package-install": "blakit\\api\\controllers\\MigrationController::migrate",
+    "post-package-update": "blakit\\api\\controllers\\MigrationController::migrate"
   }
 }
