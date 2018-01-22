@@ -13,7 +13,7 @@ class MultipleImageRequest extends RequestModel
     public function rules()
     {
         return [
-            [['files'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 10],
+            [['files'], 'file', 'skipOnEmpty' => false, 'maxSize' => 5 * 1024 * 1024, 'extensions' => 'png, jpg', 'maxFiles' => 10],
         ];
     }
 }

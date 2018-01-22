@@ -14,6 +14,10 @@ use yii\helpers\Url;
  * @property integer $id
  * @property string $name
  * @property string $ext
+ * @property string $size
+ * @property string $mime
+ * @property string $width
+ * @property string $height
  * @property integer $created_at
  * @property integer $user_id
  *
@@ -35,10 +39,11 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'ext'], 'required'],
+            [['name', 'ext', 'size', 'mime', 'width', 'height'], 'required'],
             [['created_at'], 'integer'],
             [['name'], 'string', 'max' => 32],
             [['ext'], 'string', 'max' => 3],
+            [['size'], 'integer', 'max' => 5 * 1024 * 1024],
         ];
     }
 
