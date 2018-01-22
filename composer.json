@@ -2,7 +2,7 @@
   "name": "blakit/yii2-api",
   "description": "Api starter for Yii2 projects",
   "type": "library",
-  "license": "Open Source",
+  "license": "proprietary",
   "authors": [
     {
       "name": "Vital Ozierski",
