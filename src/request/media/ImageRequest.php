@@ -17,7 +17,7 @@ class ImageRequest extends RequestModel
         return $this->dynamicRules;
     }
 
-    public function setFileRule($maxSize)
+    public function setMaxSizeFile($maxSize)
     {
         $this->dynamicRules[] = [['file'], 'file', 'skipOnEmpty' => false, 'maxSize' => $maxSize, 'extensions' => 'png, jpg'];
     }

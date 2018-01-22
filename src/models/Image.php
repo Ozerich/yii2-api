@@ -2,6 +2,7 @@
 
 namespace blakit\api\models;
 
+use blakit\api\constants\UploadDir;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -75,6 +76,7 @@ class Image extends \yii\db\ActiveRecord
     }
 
     /**
+     * Uploads folders for image
      * @return string
      */
     public function getUploadsFolderPath()
@@ -83,6 +85,7 @@ class Image extends \yii\db\ActiveRecord
     }
 
     /**
+     * Make dirs before upload image
      * @return $this
      */
     public function prepareMkdir()
@@ -101,30 +104,34 @@ class Image extends \yii\db\ActiveRecord
     }
 
     /**
+     * Uploads folder system path
      * @return string
      */
     public function getUploadsFolderSystemPath()
     {
-        return Yii::getAlias('@webroot') . '/uploads/images/' . $this->getUploadsFolderPath();
+        return Yii::getAlias('@webroot') . UploadDir::IMAGES . $this->getUploadsFolderPath();
     }
 
     /**
+     * Path to image
      * @return string
      */
     public function getFilepath()
     {
-        return '/uploads/images/' . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
+        return UploadDir::IMAGES . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
     }
 
     /**
+     * Get full system path to image
      * @return string
      */
     public function getSystemPath()
     {
-        return $_SERVER['DOCUMENT_ROOT'] . '/uploads/images/' . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
+        return $_SERVER['DOCUMENT_ROOT'] . UploadDir::IMAGES . $this->getUploadsFolderPath() . '/' . $this->name . '.' . $this->ext;
     }
 
     /**
+     * Get URL for image
      * @return string
      */
     public function getUrl()
@@ -133,13 +140,20 @@ class Image extends \yii\db\ActiveRecord
     }
 
     /**
+     * Full image info in JSON format
      * @return array
      */
     public function toJSON()
     {
         return [
             'id' => $this->id,
-            'url' => $this->getUrl()
+            'url' => $this->getUrl(),
+            'width' => $this->width,
+            'height' => $this->height,
+            'name' => $this->name,
+            'ext' => $this->ext,
+            'mime' => $this->mime,
+            'size' => $this->size,
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\controllers\media;
+namespace blakit\api\actions;
 
 use blakit\api\helpers\media\UploadHelper;
 use blakit\api\request\media\ImageRequest;
@@ -14,7 +14,7 @@ class ImageAction extends Action {
         $this->maxSize = $this->maxSize ?? 5 * 1024 * 1024;
 
         $request = new ImageRequest();
-        $request->setFileRule($this->maxSize);
+        $request->setMaxSizeFile($this->maxSize);
 
         return UploadHelper::run($request, 'file');
     }

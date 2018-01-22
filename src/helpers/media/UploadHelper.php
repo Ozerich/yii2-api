@@ -65,17 +65,9 @@ class UploadHelper
         $image->ext = $file->getExtension();
         $fullpath = $image->prepareMkdir()->getSystemPath();
         if ($file->saveAs($fullpath)) {
+            self::correctImageOrientation($fullpath, $image->ext);
             $imageInfo = self::getImageInfo($fullpath);
-            $needRotate = $imageInfo['width'] > $imageInfo['height'];
-            if ($needRotate) {
-                self::rotate($fullpath, $image->ext);
-            }
-            $image->setAttributes([
-                'width' => $needRotate ? $imageInfo['height'] : $imageInfo['width'],
-                'height' => $needRotate ? $imageInfo['width'] : $imageInfo['height'],
-                'mime' => $imageInfo['mime'],
-                'size' => $file->size,
-            ]);
+            $image->setAttributes(array_merge($imageInfo, ['size' => $file->size]));
             $image->save();
             $result = $image->toJSON();
         } else {
@@ -92,16 +84,42 @@ class UploadHelper
      * @param string $filename
      * @param string $extension
      */
-    public static function rotate($filename, $extension)
+    public static function rotate($filename, $extension, $angle)
     {
         if ($extension == 'png') {
             $image = imagecreatefrompng($filename);
-            $rotate = imagerotate($image, 90, 0);
+            $rotate = imagerotate($image, $angle, 0);
             imagepng($rotate, $filename);
         } else {
             $image = imagecreatefromjpeg($filename);
-            $rotate = imagerotate($image, 90, 0);
+            $rotate = imagerotate($image, $angle, 0);
             imagejpeg($rotate, $filename);
+        }
+    }
+
+    /**
+     * Correct image orientation
+     * @param $filename
+     * @param $extenstion
+     */
+    public static function correctImageOrientation($filename, $extenstion)
+    {
+        if (function_exists('exif_read_data')) {
+            $exif = exif_read_data($filename);
+            if($exif && isset($exif['Orientation'])) {
+                $orientation = $exif['Orientation'];
+                if($orientation != 1){
+                    $deg = 0;
+                    switch ($orientation) {
+                        case 3: $deg = 180; break;
+                        case 6: $deg = 270; break;
+                        case 8: $deg = 90;  break;
+                    }
+                    if ($deg) {
+                        self::rotate($filename, $extenstion, $deg);
+                    }
+                }
+            }
         }
     }
 

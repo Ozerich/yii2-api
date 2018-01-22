@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\controllers\media;
+namespace blakit\api\actions;
 
 use blakit\api\helpers\media\UploadHelper;
 use blakit\api\request\media\MultipleImageRequest;
@@ -17,7 +17,8 @@ class MultipleImageAction extends Action {
         $this->maxFiles = $this->maxFiles ?? 10;
 
         $request = new MultipleImageRequest();
-        $request->setFileRule($this->maxSize, $this->maxFiles);
+        $request->setMaxSizeFile($this->maxSize);
+        $request->setMaxFiles($this->maxFiles);
 
         return UploadHelper::runMultiple($request, 'files');
     }

@@ -12,13 +12,33 @@ class MultipleImageRequest extends RequestModel
 
     private $dynamicRules = [];
 
+    private $maxFiles;
+
+    private $maxSize;
+
     public function rules()
     {
         return $this->dynamicRules;
     }
 
-    public function setFileRule($maxSize, $maxFiles)
+    protected function setFileRule()
     {
-        $this->dynamicRules[] = [['files'], 'file', 'skipOnEmpty' => false, 'maxSize' => $maxSize, 'extensions' => 'png, jpg', 'maxFiles' => $maxFiles];
+        $this->dynamicRules[] = [['files'], 'file', 'skipOnEmpty' => false, 'maxSize' => $this->maxSize, 'extensions' => 'png, jpg', 'maxFiles' => $this->maxFiles];
+    }
+
+    public function setMaxSizeFile($maxSize)
+    {
+        $this->maxSize = $maxSize;
+        if ($this->maxSize && $this->maxFiles) {
+            $this->setFileRule();
+        }
+    }
+
+    public function setMaxFiles($maxFiles)
+    {
+        $this->maxFiles = $maxFiles;
+        if ($this->maxSize && $this->maxFiles) {
+            $this->setFileRule();
+        }
     }
 }

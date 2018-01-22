@@ -34,14 +34,18 @@ class m180120_135533_create_images_table extends Migration
             'user_id'
         );
 
-        // add foreign key for table `users`
-        $this->addForeignKey(
-            'fk-images-user_id',
-            '{{%images}}',
-            'user_id',
-            '{{%users}}',
-            'id'
-        );
+        try {
+            // add foreign key for table `users`
+            $this->addForeignKey(
+                'fk-images-user_id',
+                '{{%images}}',
+                'user_id',
+                '{{%users}}',
+                'id'
+            );
+        } catch (\yii\db\Exception $e) {
+            print $e->getMessage();
+        }
     }
 
     /**
@@ -49,11 +53,15 @@ class m180120_135533_create_images_table extends Migration
      */
     public function down()
     {
-        // drops foreign key for table `users`
-        $this->dropForeignKey(
-            'fk-images-user_id',
-            '{{%images}}'
-        );
+        try {
+            // drops foreign key for table `users`
+            $this->dropForeignKey(
+                'fk-images-user_id',
+                '{{%images}}'
+            );
+        } catch (\yii\db\Exception $e) {
+            print $e->getMessage();
+        }
 
         // drops index for column `user_id`
         $this->dropIndex(

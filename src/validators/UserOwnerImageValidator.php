@@ -14,14 +14,14 @@ class UserOwnerImageValidator extends Validator
                 /** @var Image $image */
                 $image = Image::findOne($item);
                 if (!$image || $image->user_id != \Yii::$app->user->id) {
-                    return [\Yii::t('errors', 'Доступ к одной из картинок запрещен'), []];
+                    return [\Yii::t('errors', 'Доступ к картинке ID '.$item.' запрещен'), []];
                 }
             }
         } else {
             /** @var Image $image */
             $image = Image::findOne($value);
             if (!$image || $image->user_id != \Yii::$app->user->id) {
-                return [\Yii::t('errors', 'Доступ к картинке запрещен'), []];
+                return [\Yii::t('errors', 'Доступ к картинке ID '.$value.' запрещен'), []];
             }
         }
 
