@@ -105,7 +105,7 @@ class UploadHelper
     public static function correctImageOrientation($filename, $extenstion)
     {
         if (function_exists('exif_read_data')) {
-            $exif = exif_read_data($filename);
+            $exif = @exif_read_data($filename);
             if($exif && isset($exif['Orientation'])) {
                 $orientation = $exif['Orientation'];
                 if($orientation != 1){
