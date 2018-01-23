@@ -15,6 +15,49 @@ class m180120_135533_create_images_table extends Migration
      */
     public function up()
     {
+        // drop indexes and foreign keys with images table, save info in array
+        $tableSchema = Yii::$app->db->schema->getTableSchema('{{%images}}');
+        $restore = [];
+
+        foreach (Yii::$app->db->schema->getTableNames() as $name) {
+            $table = Yii::$app->db->schema->getTableSchema($name);
+            foreach ($table->foreignKeys as $key => $value) {
+                if ($value[0] == 'images') {
+                    $from_id = ''; $to_id = '';
+                    foreach ($value as $keyKey => $keyValue) {
+                        if ($keyKey !== 0) {
+                            $from_id = $keyKey;
+                            $to_id = $keyValue;
+                        }
+                    }
+                    $restore[] = [
+                        'index' => $key,
+                        'from_table' => $name,
+                        'to_table' => 'images',
+                        'from_id' => $from_id,
+                        'to_id' => $to_id,
+                    ];
+                    try {
+                        $this->dropForeignKey($key, $name);
+                        $this->dropIndex($key, $name);
+                    } catch (\yii\db\Exception $e) {}
+                }
+            }
+        }
+
+        // drop exists table
+        if ($tableSchema) {
+            $this->truncateTable('{{%images}}');
+            foreach ($tableSchema->foreignKeys as $key => $value) {
+                try {
+                    $this->dropForeignKey($key, $value[0]);
+                    $this->dropIndex($key, $value[0]);
+                } catch (\yii\db\Exception $e) {}
+            }
+            $this->dropTable('{{%images}}');
+        }
+
+        // create table
         $this->createTable('{{%images}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
@@ -45,6 +88,12 @@ class m180120_135533_create_images_table extends Migration
             );
         } catch (\yii\db\Exception $e) {
             print 'Warning: The database does not contain \'users\' table';
+        }
+
+        // restore indexes and foreign keys
+        foreach ($restore as $value) {
+            $this->addForeignKey($value['index'], $value['from_table'], $value['from_id'], $value['to_table'], $value['to_id']);
+            $this->createIndex($value['index'], $value['from_table'], $value['from_id']);
         }
     }
 
