@@ -45,8 +45,7 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-
+        $this->initRequestAndResponse();
         $this->initI18n();
         $this->initErrorHandler();
     }
@@ -58,6 +57,13 @@ class Module extends \yii\base\Module
                 'class' => \yii\filters\Cors::className(),
             ],
         ];
+    }
+
+    private function initRequestAndResponse()
+    {
+        \Yii::$app->request->enableCookieValidation = false;
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        \Yii::$app->request->parsers['application/json'] = 'yii\web\JsonParser';
     }
 
     public function initI18n()
