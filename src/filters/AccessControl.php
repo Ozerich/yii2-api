@@ -80,7 +80,7 @@ class AccessControl extends ActionFilter
      */
     protected function denyAccess($user)
     {
-        if ($user->getIsGuest()) {
+        if ($user instanceof User && $user->getIsGuest()) {
             $user->loginRequired();
         } else {
             throw new ForbiddenHttpException(\Yii::t('yii', 'You are not allowed to perform this action.'));
