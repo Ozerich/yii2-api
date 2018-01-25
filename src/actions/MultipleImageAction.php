@@ -21,6 +21,8 @@ class MultipleImageAction extends Action {
         if ($this->extensions) $request->extensions = $this->extensions;
         if ($this->maxFiles) $request->maxFiles = $this->maxFiles;
 
-        return UploadHelper::runMultiple($request, 'files');
+        return [
+            'images' => UploadHelper::runMultiple($request, 'files')
+        ];
     }
 }

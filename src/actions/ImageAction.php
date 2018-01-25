@@ -17,6 +17,8 @@ class ImageAction extends Action {
 
         if ($this->maxSize) $request->maxSize = $this->maxSize;
         if ($this->extensions) $request->extensions = $this->extensions;
-        return UploadHelper::run($request, 'file');
+        return [
+            'image' => UploadHelper::run($request, 'file')
+        ];
     }
 }
