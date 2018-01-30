@@ -90,6 +90,7 @@ class Image extends \yii\db\ActiveRecord
     public function prepareMkdir()
     {
         if (!file_exists($this->getUploadsFolderSystemPath())) {
+            /* Make dirs recursive with 0777 access */
             mkdir($this->getUploadsFolderSystemPath(), 0777, true);
         }
         return $this;
