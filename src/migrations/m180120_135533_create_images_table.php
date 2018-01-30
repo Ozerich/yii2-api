@@ -36,6 +36,7 @@ class m180120_135533_create_images_table extends Migration
                 'mime' => $this->string()->notNull(),
                 'width' => $this->integer()->notNull(),
                 'height' => $this->integer()->notNull(),
+                'created_at' => $this->integer()->notNull(),
             ]);
 
             // creates index for column `user_id`
