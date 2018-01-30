@@ -89,15 +89,8 @@ class Image extends \yii\db\ActiveRecord
      */
     public function prepareMkdir()
     {
-        $firstDirArray = explode('/', $this->getUploadsFolderSystemPath());
-        unset($firstDirArray[count($firstDirArray)-1]);
-        $firstDir = implode('/', $firstDirArray);
-        if (!file_exists($firstDir)) {
-            mkdir($firstDir);
-        }
-        $secondDir = $this->getUploadsFolderSystemPath();
-        if (!file_exists($secondDir)) {
-            mkdir($secondDir);
+        if (!file_exists($this->getUploadsFolderSystemPath())) {
+            mkdir($this->getUploadsFolderSystemPath(), 0777, true);
         }
         return $this;
     }
