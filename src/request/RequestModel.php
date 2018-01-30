@@ -4,6 +4,7 @@ namespace blakit\api\request;
 
 use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\db\ActiveRecord;
 use yii\validators\Validator;
 
 class RequestModel extends Model
@@ -23,7 +24,24 @@ class RequestModel extends Model
         return [];
     }
 
+    public function init()
+    {
+        $models = $this->models();
+
+        foreach ($models as $attr => $className) {
+            $this->{$attr} = \Yii::createObject($className);
+        }
+
+        parent::init();
+    }
+
     private $data = [];
+
+    public function setModelId(ActiveRecord $model, $id)
+    {
+        $model->id = $id;
+        $model->isNewRecord = false;
+    }
 
     /**
      * @param $attribute
@@ -39,12 +57,6 @@ class RequestModel extends Model
         $data = $post ? \Yii::$app->request->post() : \Yii::$app->request->get();
 
         $this->data = $data;
-
-        $models = $this->models();
-
-        foreach ($models as $model_field => $model_class) {
-            $this->{$model_field} = \Yii::createObject($model_class);
-        }
 
         foreach ($this->modelFields() as $model_field => $model_fields) {
             foreach ($model_fields as $field) {

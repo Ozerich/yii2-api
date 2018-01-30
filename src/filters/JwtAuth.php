@@ -10,20 +10,20 @@ class JwtAuth extends AuthMethod
 
     public function authenticate($user, $request, $response)
     {
+        $action_id = $this->getActionId(\Yii::$app->requestedAction);
+        $allowGuest = in_array($action_id, $this->allowGuestActions);
         $authHeader = $request->getHeaders()->get('Authorization');
 
         if ($authHeader !== null && preg_match('/^JWT\s+(.*?)$/', $authHeader, $matches)) {
             $identity = $user->loginByAccessToken($matches[1], get_class($this));
             if ($identity === null) {
-                $action_id = $this->getActionId(\Yii::$app->requestedAction);
-                if (in_array($action_id, $this->allowGuestActions)) {
-                } else {
+                if(!$allowGuest){
                     $this->handleFailure($response);
                 }
             }
             return $identity;
         }
 
-        return null;
+        return $allowGuest ? true : null;
     }
 }
