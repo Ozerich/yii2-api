@@ -44,7 +44,7 @@ class Image extends \yii\db\ActiveRecord
             [['name', 'ext', 'size', 'mime', 'width', 'height'], 'required'],
             [['created_at'], 'integer'],
             [['name'], 'string', 'max' => 32],
-            [['ext'], 'string', 'max' => 3],
+            [['ext'], 'string', 'max' => 5],
             [['size'], 'integer', 'max' => 5 * 1024 * 1024],
         ];
     }

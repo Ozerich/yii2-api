@@ -31,7 +31,7 @@ class m180120_135533_create_images_table extends Migration
                 'id' => $this->primaryKey(),
                 'user_id' => $this->integer()->notNull(),
                 'name' => $this->string(32)->notNull(),
-                'ext' => $this->string(3)->notNull(),
+                'ext' => $this->string(5)->notNull(),
                 'size' => $this->integer()->notNull(),
                 'mime' => $this->string()->notNull(),
                 'width' => $this->integer()->notNull(),
