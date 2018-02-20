@@ -25,6 +25,8 @@ use yii\helpers\Url;
  */
 class Image extends \yii\db\ActiveRecord
 {
+    const UPLOAD_DIR = '/uploads/images/';
+
     /**
      * @inheritdoc
      */
@@ -138,7 +140,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getUploadDir()
     {
-        $uploadDir = Yii::$app->controller->module->defaultUploadImagesDir;
+        $uploadDir = static::UPLOAD_DIR;
         if ($uploadDir && $uploadDir[0] != '/') $uploadDir = '/' . $uploadDir;
         if ($uploadDir && $uploadDir[strlen($uploadDir) - 1] != '/') $uploadDir .= '/';
         return $uploadDir;

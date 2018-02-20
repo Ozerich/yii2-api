@@ -39,8 +39,6 @@ class Module extends \yii\base\Module
 
     public $defaultLocale = 'en';
 
-    public $defaultUploadImagesDir = '/uploads/images/';
-
     public function init()
     {
         parent::init();
