@@ -7,6 +7,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\Application;
 
 /**
  * This is the model class for table "{{%images}}".
