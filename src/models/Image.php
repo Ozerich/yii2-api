@@ -51,20 +51,28 @@ class Image extends \yii\db\ActiveRecord
     /**
      * @return array
      */
+    /**
+     * @return array
+     */
     public function behaviors()
     {
-        return [
+        $behaviors = [
             [
                 'class' => TimestampBehavior::className(),
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => false
-            ],
-            [
+            ]
+        ];
+
+        if (Yii::$app instanceof Application) {
+            $behaviors[] = [
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => false
-            ]
-        ];
+            ];
+        }
+
+        return $behaviors;
     }
 
     /**
