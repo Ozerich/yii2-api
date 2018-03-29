@@ -16,7 +16,7 @@ class UserOwnerImageValidator extends Validator
         $image = Image::findOne($value);
 
         if (!$image || ($is_console == false &&  $image->user_id != \Yii::$app->user->id)) {
-            return [\Yii::t('errors', 'Доступ к картинке ID {id} запрещен', ['id' => $value])];
+            return [\Yii::t('errors', 'Доступ к картинке ID {id} запрещен', ['id' => $value]), []];
         }
 
         return true;
