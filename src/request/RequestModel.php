@@ -19,6 +19,11 @@ class RequestModel extends Model
         return [];
     }
 
+    protected function structures()
+    {
+        return [];
+    }
+
     protected function ignoreFieldsIfNotSet()
     {
         return [];
@@ -43,6 +48,17 @@ class RequestModel extends Model
         $model->isNewRecord = false;
     }
 
+    private $_error_pathes = [];
+
+    public function addError($attribute, $error = '', $path = null)
+    {
+        parent::addError($attribute, $error);
+        if (!isset($this->_error_pathes[$attribute])) {
+            $this->_error_pathes[$attribute] = [];
+        }
+        $this->_error_pathes[$attribute][] = $path;
+    }
+
     /**
      * @param $attribute
      * @return bool
@@ -54,9 +70,34 @@ class RequestModel extends Model
 
     public function load($data = null, $formName = null, $post = true)
     {
-        $data = $post ? \Yii::$app->request->post() : \Yii::$app->request->get();
+        if ($data === null) {
+            $data = $post ? \Yii::$app->request->post() : \Yii::$app->request->get();
+        }
 
         $this->data = $data;
+
+        foreach ($this->structures() as $model_field => $params) {
+            if (isset($data[$model_field])) {
+                $value = $data[$model_field];
+                $is_array = isset($params['is_array']) && $params['is_array'];
+
+                $items = $is_array ? $value : [$value];
+
+                foreach ($items as &$item) {
+                    /** @var Model $struct */
+                    $struct = \Yii::createObject($params['model_class']);
+                    foreach ($item as $param => $value) {
+                        if ($struct->hasProperty($param)) {
+                            $struct->{$param} = $value;
+                        }
+                    }
+                    $item = $struct;
+                }
+
+                $this->{$model_field} = $is_array ? $items : array_shift($items);
+                unset($data[$model_field]);
+            }
+        }
 
         foreach ($this->modelFields() as $model_field => $model_fields) {
             foreach ($model_fields as $field) {
@@ -87,6 +128,26 @@ class RequestModel extends Model
     {
         $result = parent::validate($attributeNames, $clearErrors);
 
+        foreach ($this->structures() as $model_field => $params) {
+            $value = $this->{$model_field};
+
+            $items = is_array($value) ? $value : [$value];
+            $is_array = isset($params['is_array']) && $params['is_array'];
+
+            foreach ($items as $ind => $item) {
+                if ($item && !$item->validate()) {
+
+                    foreach ($item->getErrors() as $error_field => $field_errors) {
+                        foreach ($field_errors as $error) {
+                            $this->addError($model_field, $error, $is_array ? $ind : null);
+                        }
+                    }
+
+                    $result = false;
+                }
+            }
+        }
+
         foreach ($this->modelFields() as $model_field => $model_fields) {
             /** @var Model $model */
             $model = $this->{$model_field};
@@ -107,18 +168,18 @@ class RequestModel extends Model
             }
         }
 
-
         if (!$result) {
             $errors = $this->getErrors();
 
             $ex = new InvalidRequestException();
 
             foreach ($errors as $field => $field_errors) {
-                foreach ($field_errors as $error) {
+                foreach ($field_errors as $ind => $error) {
+                    $error_path = $this->_error_pathes[$field][$ind];
                     if (is_string($error)) {
-                        $error = new RequestError($field, $error);
+                        $error = new RequestError($field, $error, null, $error_path);
                     } else {
-                        $error = new RequestError($field, $error['message'], $error['code']);
+                        $error = new RequestError($field, $error['message'], $error['code'], $error_path);
                     }
 
                     $ex->addError($error);

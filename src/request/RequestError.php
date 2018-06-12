@@ -3,7 +3,6 @@
 namespace blakit\api\request;
 
 
-use blakit\api\Module;
 use blakit\api\validators\base\ValidationError;
 
 class RequestError
@@ -12,15 +11,24 @@ class RequestError
 
     public $error;
 
-    public function __construct($field, $error, $error_code = '')
+    public $index = null;
+
+    public function __construct($field, $error, $error_code = '', $error_index = null)
     {
         $this->field = $field;
         $this->error = $error instanceof ValidationError ? $error : new ValidationError($error_code, $error);
+        $this->index = $error_index;
     }
 
     public function toJSON()
     {
-        return $this->error->toJSON();
+        $result = $this->error->toJSON();
+
+        if($this->index !== null){
+            $result = array_merge($result, ['index' => $this->index]);
+        }
+
+        return $result;
     }
 
 }
