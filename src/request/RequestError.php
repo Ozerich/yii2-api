@@ -11,21 +11,21 @@ class RequestError
 
     public $error;
 
-    public $index = null;
+    public $path = null;
 
-    public function __construct($field, $error, $error_code = '', $error_index = null)
+    public function __construct($field, $error, $error_code = '', $error_path = null)
     {
         $this->field = $field;
         $this->error = $error instanceof ValidationError ? $error : new ValidationError($error_code, $error);
-        $this->index = $error_index;
+        $this->path = $error_path;
     }
 
     public function toJSON()
     {
         $result = $this->error->toJSON();
 
-        if($this->index !== null){
-            $result = array_merge($result, ['index' => $this->index]);
+        if($this->path !== null){
+            $result = array_merge($result, ['path' => $this->path]);
         }
 
         return $result;

@@ -137,9 +137,13 @@ class RequestModel extends Model
             foreach ($items as $ind => $item) {
                 if ($item && !$item->validate()) {
 
+                    $pathes = $item instanceof \blakit\api\base\Model ? $item->getErrorPathes() : [];
+
                     foreach ($item->getErrors() as $error_field => $field_errors) {
-                        foreach ($field_errors as $error) {
-                            $this->addError($model_field, $error, $is_array ? $ind : null);
+                        foreach ($field_errors as $_ind => $error) {
+                            $path = isset($pathes[$error_field][$_ind]) ? $pathes[$error_field][$_ind] : null;
+                            $error_path = ($is_array ? $ind . (empty($path) ? '' : '.') : '') . $path;
+                            $this->addError($model_field, $error, empty($path) ? null : $error_path);
                         }
                     }
 

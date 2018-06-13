@@ -40,4 +40,9 @@ class LatLng extends Model
 
         return true;
     }
+
+    public function __toString()
+    {
+        return implode(';', [$this->lat, $this->lng]);
+    }
 }
