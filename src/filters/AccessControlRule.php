@@ -3,12 +3,11 @@
 namespace blakit\api\filters;
 
 use yii\base\Action;
-use yii\base\ActionFilter;
 use yii\base\Component;
-use yii\di\Instance;
 use yii\web\ForbiddenHttpException;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\Request;
+use yii\web\UnauthorizedHttpException;
 use yii\web\User;
 
 class AccessControlRule extends Component
@@ -18,6 +17,8 @@ class AccessControlRule extends Component
     public $verbs;
 
     public $roles;
+
+    public $allowGuest = false;
 
     public function init()
     {
@@ -49,13 +50,23 @@ class AccessControlRule extends Component
         }
     }
 
+
     /**
-     * @param User $user the user object
-     * @return bool whether the rule applies to the role
+     * @param $user
+     * @return bool
+     * @throws UnauthorizedHttpException
      */
     protected function matchRole($user)
     {
         if (empty($this->roles)) {
+            return true;
+        }
+
+        if ($user->isGuest) {
+            if (!$this->allowGuest) {
+                throw new UnauthorizedHttpException('Your request was made with invalid credentials.');
+            }
+
             return true;
         }
 
