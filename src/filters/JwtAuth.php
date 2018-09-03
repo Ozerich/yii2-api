@@ -24,6 +24,6 @@ class JwtAuth extends AuthMethod
             return $identity;
         }
 
-        return $allowGuest ? true : null;
+        return true;
     }
 }
