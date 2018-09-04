@@ -85,7 +85,7 @@ class RequestModel extends Model
 
                 foreach ($items as &$item) {
                     /** @var Model $struct */
-                    $struct = \Yii::createObject($params['model_class']);
+                    $struct = \Yii::createObject($params['model_class'], isset($params['config']) ? [$params['config']] : []);
                     foreach ($item as $param => $value) {
                         if ($struct->hasProperty($param)) {
                             $struct->{$param} = $value;
