@@ -80,7 +80,6 @@ class Module extends \yii\base\Module
         if ($this->enableLocalization) {
             $new_i18n_config['translations']['*'] = [
                 'class' => PhpMessageSource::className(),
-                'sourceLanguage' => $this->defaultLocale,
                 'on missingTranslation' => [
                     'blakit\api\errors\TranslationEventHandler',
                     'handleMissingTranslation'
