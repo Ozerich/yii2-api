@@ -31,7 +31,7 @@ class Module extends \yii\base\Module
 {
     public $enableErrorCodes = false;
 
-    public $defaultErrorCode = ErrorCode::UNKNOWN_ERROR;
+    public $defaultErrorCode = 'UNKNOWN_ERROR';
 
     public $enableLocalization = false;
 
