@@ -5,12 +5,10 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace blakit\api\validators;
+namespace blakit\api\validators\yii;
 
-use blakit\api\constants\ErrorCode;
 use blakit\api\validators\base\ValidationError;
 use blakit\api\validators\base\Validator;
-
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Json;
@@ -55,6 +53,8 @@ class EmailValidator extends Validator
      * otherwise an exception would be thrown.
      */
     public $enableIDN = false;
+
+    public $errorCode = 'FIELD_INCORRECT_EMAIL';
 
 
     /**
@@ -107,7 +107,7 @@ class EmailValidator extends Validator
             }
         }
 
-        return $valid ? null : [new ValidationError(ErrorCode::FIELD_INCORRECT_EMAIL, $this->message), []];
+        return $valid ? null : [new ValidationError($this->errorCode, $this->message), []];
     }
 
 

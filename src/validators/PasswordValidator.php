@@ -2,18 +2,26 @@
 
 namespace blakit\api\validators;
 
-use blakit\api\constants\ErrorCode;
 use blakit\api\validators\base\ValidationError;
 use blakit\api\validators\base\Validator;
 
 class PasswordValidator extends Validator
 {
+    public $message;
+
+    public $errorCode = 'FIELD_SIMPLE_PASSWORD';
+
+    public function init()
+    {
+        $this->message = \Yii::t('validator', 'Too weak password');
+    }
+
     public function validateAttribute($model, $attribute)
     {
         $value = $model->{$attribute};
 
         if (strlen($value) < 6) {
-            $this->addError($model, $attribute, new ValidationError(ErrorCode::FIELD_SIMPLE_PASSWORD, \Yii::t('errors', 'Пароль должен состоять из минимум 6 символов')));
+            $this->addError($model, $attribute, new ValidationError($this->errorCode, $this->formatMessage($this->message, ['attribute' => $attribute])));
         }
 
         return true;

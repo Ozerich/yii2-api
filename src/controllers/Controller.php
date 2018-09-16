@@ -28,8 +28,7 @@ class Controller extends \yii\web\Controller
                     if (!in_array($language, $module->locales)) {
                         $language = $module->defaultLocale;
                     }
-                }
-                else{
+                } else {
                     $language = $module->defaultLocale;
                 }
             }
@@ -44,7 +43,7 @@ class Controller extends \yii\web\Controller
     {
         return array_merge(parent::behaviors(), [
             [
-                'class' => Cors::className(),
+                'class' => Cors::class,
             ],
         ]);
     }

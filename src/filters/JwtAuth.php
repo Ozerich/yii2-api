@@ -17,7 +17,7 @@ class JwtAuth extends AuthMethod
         if ($authHeader !== null && preg_match('/^JWT\s+(.*?)$/', $authHeader, $matches)) {
             $identity = $user->loginByAccessToken($matches[1], get_class($this));
             if ($identity === null) {
-                if(!$allowGuest){
+                if (!$allowGuest) {
                     $this->handleFailure($response);
                 }
             }

@@ -17,8 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Forbidden' => 'Запрещено',
-    'Internal Server Error' => 'Внутреняяя ошибка сервера',
-    'Method not allowed' => 'Метод запрещен',
-    'Unauthorized' => 'Вы не авторизованы',
+    'Forbidden' => 'Заборонено',
+    'Internal Server Error' => 'Внутренняя ошибка сервера',
+    'Method not allowed' => 'Метод заборонений',
+    'Unauthorized' => 'Ви не авторизовані',
 ];

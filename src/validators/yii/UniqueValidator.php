@@ -5,12 +5,10 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace blakit\api\validators;
+namespace blakit\api\validators\yii;
 
-use blakit\api\constants\ErrorCode;
 use blakit\api\validators\base\ValidationError;
 use blakit\api\validators\base\Validator;
-
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
@@ -94,6 +92,7 @@ class UniqueValidator extends Validator
      */
     public $targetAttributeJunction = 'and';
 
+    public $errorCode = 'FIELD_UNIQUE';
 
     /**
      * @inheritdoc
@@ -139,7 +138,7 @@ class UniqueValidator extends Validator
             if (is_array($targetAttribute) && count($targetAttribute) > 1) {
                 $this->addComboNotUniqueError($model, $attribute);
             } else {
-                $this->addError($model, $attribute, new ValidationError(ErrorCode::FIELD_UNIQUE, $this->message));
+                $this->addError($model, $attribute, new ValidationError($this->errorCode, $this->message));
             }
         }
     }
@@ -168,33 +167,33 @@ class UniqueValidator extends Validator
         /** @var ActiveRecordInterface $targetClass $query */
         $query = $this->prepareQuery($targetClass, $conditions);
 
-        if (!$model instanceof ActiveRecordInterface || $model->getIsNewRecord() || $model->className() !== $targetClass::className()) {
-            // if current $model isn't in the database yet then it's OK just to call exists()
-            // also there's no need to run check based on primary keys, when $targetClass is not the same as $model's class
-            $exists = $query->exists();
-        } else {
-            // if current $model is in the database already we can't use exists()
-            if ($query instanceof \yii\db\ActiveQuery) {
-                // only select primary key to optimize query
-                $columnsCondition = array_flip($targetClass::primaryKey());
-                $query->select(array_flip($this->applyTableAlias($query, $columnsCondition)));
-            }
-            $models = $query->limit(2)->asArray()->all();
-            $n = count($models);
-            if ($n === 1) {
-                // if there is one record, check if it is the currently validated model
-                $dbModel = reset($models);
-                $pks = $targetClass::primaryKey();
-                $pk = [];
-                foreach ($pks as $pkAttribute) {
-                    $pk[$pkAttribute] = $dbModel[$pkAttribute];
-                }
-                $exists = ($pk != $model->getOldPrimaryKey(true));
-            } else {
-                // if there is more than one record, the value is not unique
-                $exists = $n > 1;
-            }
+        if (!$model instanceof ActiveRecordInterface || $model->getIsNewRecord() || $model->className() !== $targetClass::class) {
+        // if current $model isn't in the database yet then it's OK just to call exists()
+        // also there's no need to run check based on primary keys, when $targetClass is not the same as $model's class
+        $exists = $query->exists();
+    } else {
+        // if current $model is in the database already we can't use exists()
+        if ($query instanceof \yii\db\ActiveQuery) {
+            // only select primary key to optimize query
+            $columnsCondition = array_flip($targetClass::primaryKey());
+            $query->select(array_flip($this->applyTableAlias($query, $columnsCondition)));
         }
+        $models = $query->limit(2)->asArray()->all();
+        $n = count($models);
+        if ($n === 1) {
+            // if there is one record, check if it is the currently validated model
+            $dbModel = reset($models);
+            $pks = $targetClass::primaryKey();
+            $pk = [];
+            foreach ($pks as $pkAttribute) {
+                $pk[$pkAttribute] = $dbModel[$pkAttribute];
+            }
+            $exists = ($pk != $model->getOldPrimaryKey(true));
+        } else {
+            // if there is more than one record, the value is not unique
+            $exists = $n > 1;
+        }
+    }
 
         return $exists;
     }

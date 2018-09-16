@@ -15,7 +15,7 @@ return [
     'help' => null,
     'sourcePath' => 'src',
     'messagePath' => 'src/messages',
-    'languages' => ['ru', 'en-US'],
+    'languages' => ['ru', 'uk'],
     'translator' => 'Yii::t',
     'sort' => true,
     'overwrite' => true,

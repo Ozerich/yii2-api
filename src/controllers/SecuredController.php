@@ -15,7 +15,7 @@ class SecuredController extends Controller
         unset($behaviors['authenticator']);
 
         $behaviors['authenticator'] = [
-            'class' => JwtAuth::className(),
+            'class' => JwtAuth::class,
             'except' => ['options'],
             'allowGuestActions' => $this->allowGuestActions
         ];

@@ -26,7 +26,7 @@ class AccessControl extends ActionFilter
 
         foreach ($this->rules as $rule) {
             if (isset($rule['roles']) && !empty($rule['roles'])) {
-                $this->user = Instance::ensure($this->user, User::className());
+                $this->user = Instance::ensure($this->user, User::class);
                 break;
             }
         }
@@ -34,7 +34,7 @@ class AccessControl extends ActionFilter
         foreach ($this->rules as $i => $rule) {
             if (is_array($rule)) {
                 $this->rules[$i] = \Yii::createObject(array_merge([
-                    'class' => AccessControlRule::className()
+                    'class' => AccessControlRule::class
                 ], $rule));
             }
         }
