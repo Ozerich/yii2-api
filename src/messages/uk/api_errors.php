@@ -21,4 +21,5 @@ return [
     'Internal Server Error' => 'Внутренняя ошибка сервера',
     'Method not allowed' => 'Метод заборонений',
     'Unauthorized' => 'Ви не авторизовані',
+    'Not valid structure (not object / associative array)' => 'Неправильная структура (передан не объект и не ассоативный массив)'
 ];
