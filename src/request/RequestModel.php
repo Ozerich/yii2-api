@@ -84,6 +84,9 @@ class RequestModel extends Model
                 $items = $is_array ? $value : [$value];
 
                 foreach ($items as &$item) {
+                    if (!is_array($item)) {
+                        continue;
+                    }
                     /** @var Model $struct */
                     $struct = \Yii::createObject($params['model_class'], isset($params['config']) ? [$params['config']] : []);
                     foreach ($item as $param => $value) {
@@ -135,6 +138,11 @@ class RequestModel extends Model
             $is_array = isset($params['is_array']) && $params['is_array'];
 
             foreach ($items as $ind => $item) {
+                if (!is_array($item)) {
+                    $this->addError($model_field, 'Not valid structure');
+                    $result = false;
+                    continue;
+                }
                 if ($item && !$item->validate()) {
 
                     $pathes = $item instanceof \blakit\api\base\Model ? $item->getErrorPathes() : [];
