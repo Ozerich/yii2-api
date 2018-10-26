@@ -138,7 +138,7 @@ class RequestModel extends Model
             $is_array = isset($params['is_array']) && $params['is_array'];
 
             foreach ($items as $ind => $item) {
-                if (!is_array($item)) {
+                if (!is_object($item)) {
                     $this->addError($model_field, 'Not valid structure');
                     $result = false;
                     continue;
