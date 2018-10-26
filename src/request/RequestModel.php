@@ -139,7 +139,7 @@ class RequestModel extends Model
             $is_array = isset($params['is_array']) && $params['is_array'];
 
             foreach ($items as $ind => $item) {
-                if (!is_array($item)) {
+                if (!is_object($item)) {
                     $this->addError($model_field, \Yii::t('api_errors', 'Not valid structure (not object / associative array)'));
                     $result = false;
                     continue;
