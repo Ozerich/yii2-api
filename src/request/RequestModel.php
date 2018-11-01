@@ -138,12 +138,15 @@ class RequestModel extends Model
             $is_array = isset($params['is_array']) && $params['is_array'];
 
             foreach ($items as $ind => $item) {
+                if (!$item) {
+                    continue;
+                }
                 if (!is_object($item)) {
                     $this->addError($model_field, 'Not valid structure');
                     $result = false;
                     continue;
                 }
-                if ($item && !$item->validate()) {
+                if (!$item->validate()) {
 
                     $pathes = $item instanceof \blakit\api\base\Model ? $item->getErrorPathes() : [];
 
