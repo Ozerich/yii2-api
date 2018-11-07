@@ -81,7 +81,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
                 'error' => $exception->getMessage()
             ];
             $response->send();
-        } else if ($exception instanceof ErrorException or $exception instanceof Exception) {
+        } else if ($exception instanceof ErrorException or $exception instanceof Exception or $exception instanceof \Error) {
             $response = \Yii::$app->getResponse();
             $response->setStatusCode(500);
             $response->data = [
