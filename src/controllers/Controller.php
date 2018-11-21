@@ -11,6 +11,15 @@ class Controller extends \yii\web\Controller
 {
     public $enableCsrfValidation = false;
 
+    protected function getAllowedOrigins()
+    {
+        $module = \Yii::$app->controller->module;
+
+        if ($module instanceof Module) {
+            return $module->allowedOrigins;
+        }
+    }
+
     public function beforeAction($action)
     {
         /** @var Module $module */
@@ -28,8 +37,7 @@ class Controller extends \yii\web\Controller
                     if (!in_array($language, $module->locales)) {
                         $language = $module->defaultLocale;
                     }
-                }
-                else{
+                } else {
                     $language = $module->defaultLocale;
                 }
             }
@@ -42,9 +50,23 @@ class Controller extends \yii\web\Controller
 
     public function behaviors()
     {
+        $origins = $this->getAllowedOrigins();
+
+        if (empty($origins)) {
+            return parent::behaviors();
+        }
+
         return array_merge(parent::behaviors(), [
             [
-                'class' => Cors::className(),
+                'class' => Cors::class,
+                'cors' => [
+                    'Origin' => is_array($origins) ? $origins : [$origins],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                    'Access-Control-Request-Headers' => ['*'],
+                    'Access-Control-Allow-Credentials' => null,
+                    'Access-Control-Max-Age' => 86400,
+                    'Access-Control-Expose-Headers' => [],
+                ]
             ],
         ]);
     }
