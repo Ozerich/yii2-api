@@ -29,6 +29,8 @@ use yii\web\Response;
 
 class Module extends \yii\base\Module
 {
+    public $allowedOrigins = [];
+
     public $enableErrorCodes = false;
 
     public $defaultErrorCode = 'UNKNOWN_ERROR';
@@ -46,15 +48,6 @@ class Module extends \yii\base\Module
         $this->initRequestAndResponse();
         $this->initI18n();
         $this->initErrorHandler();
-    }
-
-    public function behaviors()
-    {
-        return [
-            'corsFilter' => [
-                'class' => \yii\filters\Cors::class,
-            ],
-        ];
     }
 
     private function initRequestAndResponse()
