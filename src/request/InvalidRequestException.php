@@ -7,6 +7,9 @@ class InvalidRequestException extends \Exception
     /** @var RequestError[] */
     private $errors = [];
 
+    /** @var RequestError[] */
+    private $meta = [];
+
     public function __construct($error = null)
     {
         if ($error) {
@@ -29,5 +32,15 @@ class InvalidRequestException extends \Exception
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    public function setParam($param, $value)
+    {
+        $this->meta[$param] = $value;
+    }
+
+    public function getMetaParams()
+    {
+        return $this->meta;
     }
 }

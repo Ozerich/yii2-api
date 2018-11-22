@@ -34,6 +34,11 @@ class ErrorHandler extends \yii\web\ErrorHandler
                 'errors' => $errors_by_field
             ];
 
+            $meta = $exception->getMetaParams();
+            if (!empty($meta)) {
+                $response->data['meta'] = $meta;
+            }
+
             $response->send();
         } else if ($exception instanceof UnauthorizedHttpException) {
             $response = \Yii::$app->getResponse();
@@ -106,7 +111,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
 
             $response->send();
         } else {
-            return parent::renderException($exception);
+            parent::renderException($exception);
         }
     }
 }
