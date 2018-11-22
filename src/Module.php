@@ -41,6 +41,8 @@ class Module extends \yii\base\Module
 
     public $defaultLocale = 'en';
 
+    public $responseEvents = [];
+
     public function init()
     {
         parent::init();
