@@ -18,7 +18,7 @@ class ValidationError
         return \Yii::$app->controller->module;
     }
 
-    public function __construct($code, $message, $params = [])
+    public function __construct($code, $message)
     {
         $this->error_code = $code;
         $this->error_message = $message;

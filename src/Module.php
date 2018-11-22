@@ -33,7 +33,7 @@ class Module extends \yii\base\Module
 
     public $enableErrorCodes = false;
 
-    public $defaultErrorCode = ErrorCode::UNKNOWN_ERROR;
+    public $defaultErrorCode = 'UNKNOWN_ERROR';
 
     public $enableLocalization = false;
 
@@ -60,10 +60,10 @@ class Module extends \yii\base\Module
     public function initI18n()
     {
         $new_i18n_config = [
-            'class' => I18N::className(),
+            'class' => I18N::class,
             'translations' => [
                 'api_errors' => [
-                    'class' => PhpMessageSource::className(),
+                    'class' => PhpMessageSource::class,
                     'sourceLanguage' => 'en',
                     'basePath' => __DIR__ . '/messages'
                 ]
@@ -72,7 +72,7 @@ class Module extends \yii\base\Module
 
         if ($this->enableLocalization) {
             $new_i18n_config['translations']['*'] = [
-                'class' => PhpMessageSource::className(),
+                'class' => PhpMessageSource::class,
                 'on missingTranslation' => [
                     'blakit\api\errors\TranslationEventHandler',
                     'handleMissingTranslation'
@@ -81,7 +81,7 @@ class Module extends \yii\base\Module
         }
 
         foreach (\Yii::$app->components as $key => $value) {
-            $check = is_array($value) ? (isset($value['class']) && $value['class'] == I18N::className()) : $value instanceof I18N;
+            $check = is_array($value) ? (isset($value['class']) && $value['class'] == I18N::class) : $value instanceof I18N;
 
             if ($check) {
                 $i18n_original_config = \Yii::$app->components[$key];

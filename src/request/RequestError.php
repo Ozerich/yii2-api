@@ -24,7 +24,7 @@ class RequestError
     {
         $result = $this->error->toJSON();
 
-        if($this->path !== null){
+        if ($this->path !== null) {
             $result = array_merge($result, ['path' => $this->path]);
         }
 

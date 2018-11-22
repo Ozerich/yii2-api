@@ -1,8 +1,7 @@
 <?php
 
-namespace blakit\api\validators;
+namespace blakit\api\validators\yii;
 
-use blakit\api\constants\ErrorCode;
 use blakit\api\validators\base\ValidationError;
 use blakit\api\validators\base\Validator;
 
@@ -40,6 +39,7 @@ class RequiredValidator extends Validator
      */
     public $message;
 
+    public $errorCode = 'FIELD_REQUIRED';
 
     /**
      * @inheritdoc
@@ -62,11 +62,12 @@ class RequiredValidator extends Validator
         } elseif (!$this->strict && $value == $this->requiredValue || $this->strict && $value === $this->requiredValue) {
             return null;
         }
+
         if ($this->requiredValue === null) {
-            return [new ValidationError(ErrorCode::FIELD_REQUIRED, $this->message), []];
+            return [new ValidationError($this->errorCode, $this->message), []];
         }
 
-        return [new ValidationError(ErrorCode::FIELD_REQUIRED, $this->message), [
+        return [new ValidationError($this->errorCode, $this->message), [
             'requiredValue' => $this->requiredValue,
         ]];
     }

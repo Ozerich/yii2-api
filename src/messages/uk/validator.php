@@ -17,9 +17,8 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Forbidden' => 'Запрещено',
-    'Internal Server Error' => 'Внутреняяя ошибка сервера',
-    'Method not allowed' => 'Метод запрещен',
-    'Unauthorized' => 'Вы не авторизованы',
-    'Not valid structure (not object / associative array)' => 'Неправильная структура (передан не объект и не ассоативный массив)'
+    'Access denied' => 'Доступ заборонено',
+    'Access for file ID {id} denied' => 'Доступ до файлу ID {is} відмінено',
+    'Invalid phone' => 'Невірний телефон',
+    'Too weak password' => 'Занадто слабкий пароль',
 ];
