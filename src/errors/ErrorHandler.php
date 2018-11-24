@@ -4,6 +4,7 @@ namespace blakit\api\errors;
 
 use blakit\api\request\InvalidRequestException;
 use blakit\api\response\BaseHttpException;
+use blakit\api\utils\ApplicationVersion;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\web\ForbiddenHttpException;
@@ -16,8 +17,11 @@ class ErrorHandler extends \yii\web\ErrorHandler
 {
     protected function renderException($exception)
     {
+        $response = \Yii::$app->getResponse();
+
+        $response->headers->add('Version', ApplicationVersion::get());
+
         if ($exception instanceof InvalidRequestException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(400);
 
             $errors = $exception->getErrors();
@@ -41,7 +45,6 @@ class ErrorHandler extends \yii\web\ErrorHandler
 
             $response->send();
         } else if ($exception instanceof UnauthorizedHttpException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(401);
             $response->data = [
                 'error' => empty($exception->getMessage()) ? \Yii::t('api_errors', 'Unauthorized') : $exception->getMessage()
@@ -49,7 +52,6 @@ class ErrorHandler extends \yii\web\ErrorHandler
             $response->send();
 
         } else if ($exception instanceof ForbiddenHttpException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(403);
             $response->data = [
                 'error' => empty($exception->getMessage()) ? \Yii::t('api_errors', 'Forbidden') : $exception->getMessage()
@@ -57,14 +59,12 @@ class ErrorHandler extends \yii\web\ErrorHandler
             $response->send();
 
         } else if ($exception instanceof NotFoundHttpException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(404);
             $response->data = [
                 'error' => $exception->getMessage()
             ];
             $response->send();
         } else if ($exception instanceof MethodNotAllowedHttpException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(405);
             $response->data = [
                 'error' => \Yii::t('api_errors', 'Method not allowed'),
@@ -72,7 +72,6 @@ class ErrorHandler extends \yii\web\ErrorHandler
             ];
             $response->send();
         } else if ($exception instanceof BaseHttpException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode($exception->statusCode);
             $response->data = [
                 'error' => $exception->getMessage(),
@@ -80,14 +79,12 @@ class ErrorHandler extends \yii\web\ErrorHandler
             ];
             $response->send();
         } else if ($exception instanceof HttpException) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode($exception->statusCode);
             $response->data = [
                 'error' => $exception->getMessage()
             ];
             $response->send();
         } else if ($exception instanceof ErrorException or $exception instanceof Exception or $exception instanceof \Error) {
-            $response = \Yii::$app->getResponse();
             $response->setStatusCode(500);
             $response->data = [
                 'error' => \Yii::t('api_errors', 'Internal Server Error')
