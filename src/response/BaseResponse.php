@@ -51,6 +51,10 @@ abstract class BaseResponse extends Response
 
     protected function prepare()
     {
+        foreach (\Yii::$app->response->headers as $header => $value) {
+            $this->headers->set($header, $value);
+        }
+
         $this->headers->add('Version', ApplicationVersion::get());
 
         $this->data = $this->toJSON();
