@@ -72,21 +72,22 @@ class Module extends \yii\base\Module
             ]
         ];
 
-        if ($this->enableLocalization) {
-            $new_i18n_config['translations']['*'] = [
-                'class' => PhpMessageSource::class,
-                'on missingTranslation' => [
-                    'blakit\api\errors\TranslationEventHandler',
-                    'handleMissingTranslation'
-                ]
-            ];
-        }
-
         foreach (\Yii::$app->components as $key => $value) {
             $check = is_array($value) ? (isset($value['class']) && $value['class'] == I18N::class) : $value instanceof I18N;
 
             if ($check) {
                 $i18n_original_config = \Yii::$app->components[$key];
+
+                if ($this->enableLocalization && !isset($i18n_original_config['translations']['*'])) {
+                    $new_i18n_config['translations']['*'] = [
+                        'class' => PhpMessageSource::className(),
+                        'on missingTranslation' => [
+                            'blakit\api\errors\TranslationEventHandler',
+                            'handleMissingTranslation'
+                        ]
+                    ];
+                }
+
                 $new_i18n_config = array_merge_recursive_ex($i18n_original_config, $new_i18n_config);
 
                 return \Yii::$app->set($key, $new_i18n_config);
