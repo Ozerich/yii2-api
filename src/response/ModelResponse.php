@@ -12,7 +12,7 @@ class ModelResponse extends BaseResponse
 
     private $dtoClass;
 
-    public function __construct(Model $model, $dtoClass)
+    public function __construct(?Model $model, $dtoClass)
     {
         $this->model = $model;
         $this->dtoClass = $dtoClass;
@@ -22,6 +22,10 @@ class ModelResponse extends BaseResponse
 
     public function toJSON()
     {
+        if ($this->model === null) {
+            return ['model' => null];
+        }
+
         /** @var DTO $model */
         $model = \Yii::createObject($this->dtoClass, [$this->model]);
 
