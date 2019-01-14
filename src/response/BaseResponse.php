@@ -41,6 +41,11 @@ abstract class BaseResponse extends Response
                 $result[$ind] = $this->rec($item);
             } else if ($item instanceof DTO) {
                 $result[$ind] = $item->toJSON();
+                foreach ($result[$ind] as &$child) {
+                    if (is_array($child)) {
+                        $child = $this->rec($child);
+                    }
+                }
             } else {
                 $result[$ind] = $item;
             }
