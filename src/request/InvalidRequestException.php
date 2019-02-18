@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\request;
+namespace ozerich\api\request;
 
 class InvalidRequestException extends \Exception
 {

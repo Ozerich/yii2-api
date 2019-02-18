@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\validators\base;
+namespace ozerich\api\validators\base;
 
 use yii\validators\DateValidator;
 
@@ -24,7 +24,7 @@ class Validator extends \yii\validators\Validator
         'default' => 'yii\validators\DefaultValueValidator',
         'double' => 'yii\validators\NumberValidator',
         'each' => 'yii\validators\EachValidator',
-        'email' => 'blakit\api\validators\yii\EmailValidator',
+        'email' => 'ozerich\api\validators\yii\EmailValidator',
         'exist' => 'yii\validators\ExistValidator',
         'file' => 'yii\validators\FileValidator',
         'filter' => 'yii\validators\FilterValidator',
@@ -36,7 +36,7 @@ class Validator extends \yii\validators\Validator
         ],
         'match' => 'yii\validators\RegularExpressionValidator',
         'number' => 'yii\validators\NumberValidator',
-        'required' => 'blakit\api\validators\yii\RequiredValidator',
+        'required' => 'ozerich\api\validators\yii\RequiredValidator',
         'safe' => 'yii\validators\SafeValidator',
         'string' => 'yii\validators\StringValidator',
         'trim' => [
@@ -44,7 +44,7 @@ class Validator extends \yii\validators\Validator
             'filter' => 'trim',
             'skipOnArray' => true,
         ],
-        'unique' => 'blakit\api\validators\yii\UniqueValidator',
+        'unique' => 'ozerich\api\validators\yii\UniqueValidator',
         'url' => 'yii\validators\UrlValidator',
         'ip' => 'yii\validators\IpValidator',
     ];

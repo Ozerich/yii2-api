@@ -1,8 +1,8 @@
 <?php
 
-namespace blakit\api\validators\base;
+namespace ozerich\api\validators\base;
 
-use blakit\api\Module;
+use ozerich\api\Module;
 
 class ValidationError
 {

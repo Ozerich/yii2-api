@@ -1,8 +1,8 @@
 <?php
 
-namespace blakit\api\errors;
+namespace ozerich\api\errors;
 
-use blakit\api\Module;
+use ozerich\api\Module;
 use yii\i18n\MissingTranslationEvent;
 
 class TranslationEventHandler

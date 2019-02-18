@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\response;
+namespace ozerich\api\response;
 
 use yii\web\HttpException;
 

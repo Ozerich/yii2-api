@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\filters;
+namespace ozerich\api\filters;
 
 use yii\base\Action;
 use yii\base\Component;

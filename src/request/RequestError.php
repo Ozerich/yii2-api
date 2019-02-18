@@ -1,9 +1,9 @@
 <?php
 
-namespace blakit\api\request;
+namespace ozerich\api\request;
 
 
-use blakit\api\validators\base\ValidationError;
+use ozerich\api\validators\base\ValidationError;
 
 class RequestError
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\base;
+namespace ozerich\api\base;
 
 class Model extends \yii\base\Model
 {

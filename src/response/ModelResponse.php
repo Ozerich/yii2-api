@@ -1,8 +1,8 @@
 <?php
 
-namespace blakit\api\response;
+namespace ozerich\api\response;
 
-use blakit\api\interfaces\DTO;
+use ozerich\api\interfaces\DTO;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 

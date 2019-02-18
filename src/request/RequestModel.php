@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\request;
+namespace ozerich\api\request;
 
 use yii\base\InvalidConfigException;
 use yii\base\Model;
@@ -150,7 +150,7 @@ class RequestModel extends Model
 
                 if (!$item->validate()) {
 
-                    $pathes = $item instanceof \blakit\api\base\Model ? $item->getErrorPathes() : [];
+                    $pathes = $item instanceof \ozerich\api\base\Model ? $item->getErrorPathes() : [];
 
                     foreach ($item->getErrors() as $error_field => $field_errors) {
                         foreach ($field_errors as $_ind => $error) {
@@ -220,7 +220,7 @@ class RequestModel extends Model
             if ($rule instanceof Validator) {
                 $validators->append($rule);
             } elseif (is_array($rule) && isset($rule[0], $rule[1])) { // attributes, validator type
-                $validator = \blakit\api\validators\base\Validator::createValidator($rule[1], $this, (array)$rule[0], array_slice($rule, 2));
+                $validator = \ozerich\api\validators\base\Validator::createValidator($rule[1], $this, (array)$rule[0], array_slice($rule, 2));
                 $validators->append($validator);
             } else {
                 throw new InvalidConfigException('Invalid validation rule: a rule must specify both attribute names and validator type.');

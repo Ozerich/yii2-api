@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\utils;
+namespace ozerich\api\utils;
 
 class ApplicationVersion
 {

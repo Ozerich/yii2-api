@@ -1,12 +1,12 @@
 <?php
 
-namespace blakit\api\validators;
+namespace ozerich\api\validators;
 
 class UserOwnerFileValidator extends ModelFieldValueValidator
 {
     public $ownerId = null;
 
-    public $modelClass = 'blakit\filestorage\models\File';
+    public $modelClass = 'ozerich\filestorage\models\File';
 
     public $modelAttribute = 'user_id';
 

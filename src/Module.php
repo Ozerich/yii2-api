@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api;
+namespace ozerich\api;
 
 if (!function_exists('array_merge_recursive_ex')) {
     function array_merge_recursive_ex(array & $array1, array & $array2)
@@ -21,8 +21,8 @@ if (!function_exists('array_merge_recursive_ex')) {
     }
 }
 
-use blakit\api\constants\ErrorCode;
-use blakit\api\errors\ErrorHandler;
+use ozerich\api\constants\ErrorCode;
+use ozerich\api\errors\ErrorHandler;
 use yii\i18n\I18N;
 use yii\i18n\PhpMessageSource;
 use yii\web\Response;
@@ -82,7 +82,7 @@ class Module extends \yii\base\Module
                     $new_i18n_config['translations']['*'] = [
                         'class' => PhpMessageSource::className(),
                         'on missingTranslation' => [
-                            'blakit\api\errors\TranslationEventHandler',
+                            'ozerich\api\errors\TranslationEventHandler',
                             'handleMissingTranslation'
                         ]
                     ];

@@ -1,10 +1,10 @@
 <?php
 
-namespace blakit\api\response;
+namespace ozerich\api\response;
 
-use blakit\api\interfaces\DTO;
-use blakit\api\Module;
-use blakit\api\utils\ApplicationVersion;
+use ozerich\api\interfaces\DTO;
+use ozerich\api\Module;
+use ozerich\api\utils\ApplicationVersion;
 use yii\web\Response;
 
 abstract class BaseResponse extends Response

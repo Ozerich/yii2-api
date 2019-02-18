@@ -5,10 +5,10 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace blakit\api\validators\yii;
+namespace ozerich\api\validators\yii;
 
-use blakit\api\validators\base\ValidationError;
-use blakit\api\validators\base\Validator;
+use ozerich\api\validators\base\ValidationError;
+use ozerich\api\validators\base\Validator;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Json;

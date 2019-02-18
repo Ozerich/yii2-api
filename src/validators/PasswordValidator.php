@@ -1,9 +1,9 @@
 <?php
 
-namespace blakit\api\validators;
+namespace ozerich\api\validators;
 
-use blakit\api\validators\base\ValidationError;
-use blakit\api\validators\base\Validator;
+use ozerich\api\validators\base\ValidationError;
+use ozerich\api\validators\base\Validator;
 
 class PasswordValidator extends Validator
 {

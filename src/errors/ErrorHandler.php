@@ -1,10 +1,10 @@
 <?php
 
-namespace blakit\api\errors;
+namespace ozerich\api\errors;
 
-use blakit\api\request\InvalidRequestException;
-use blakit\api\response\BaseHttpException;
-use blakit\api\utils\ApplicationVersion;
+use ozerich\api\request\InvalidRequestException;
+use ozerich\api\response\BaseHttpException;
+use ozerich\api\utils\ApplicationVersion;
 use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\web\ForbiddenHttpException;

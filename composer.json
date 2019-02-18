@@ -1,12 +1,14 @@
 {
-  "name": "blakit/yii2-api",
+  "name": "ozerich/yii2-api",
   "description": "Api starter for Yii2 projects",
   "type": "library",
   "license": "proprietary",
   "authors": [
     {
       "name": "Vital Ozierski",
-      "email": "v.ozierski@blak-it.com"
+      "email": "vital@ozerich.com",
+      "homepage": "https://ozerich.me",
+      "role": "Developer"
     }
   ],
   "require": {
@@ -19,7 +21,7 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "blakit\\api\\": "src/"
+      "ozerich\\api\\": "src/"
     }
   }
 }

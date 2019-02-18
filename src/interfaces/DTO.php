@@ -1,6 +1,6 @@
 <?php
 
-namespace blakit\api\interfaces;
+namespace ozerich\api\interfaces;
 
 interface DTO
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace blakit\api\controllers;
+namespace ozerich\api\controllers;
 
-use blakit\api\filters\JwtAuth;
+use ozerich\api\filters\JwtAuth;
 
 class SecuredController extends Controller
 {

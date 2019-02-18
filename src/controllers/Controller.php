@@ -1,8 +1,8 @@
 <?php
 
-namespace blakit\api\controllers;
+namespace ozerich\api\controllers;
 
-use blakit\api\Module;
+use ozerich\api\Module;
 use yii\filters\Cors;
 use yii\web\HeaderCollection;
 use yii\web\IdentityInterface;
