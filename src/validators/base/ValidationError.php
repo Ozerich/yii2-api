@@ -41,7 +41,15 @@ class ValidationError
 
     public function toJSON()
     {
-        return $this->getModule()->enableErrorCodes ? [
+        $module = $this->getModule();
+
+        if ($module instanceof Module) {
+            $enableErrorCodes = $this->getModule()->enableErrorCodes;
+        } else {
+            $enableErrorCodes = false;
+        }
+
+        return $enableErrorCodes ? [
             'code' => $this->getErrorCode(),
             'message' => $this->getMessage()
         ] : $this->getMessage();
