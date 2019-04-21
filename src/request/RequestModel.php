@@ -65,7 +65,7 @@ class RequestModel extends Model
      */
     public function issetAttribute($attribute)
     {
-        return is_array($this->data) && isset($this->data[$attribute]);
+        return is_array($this->data) && (array_key_exists($attribute, $this->data));
     }
 
     public function load($data = null, $formName = null, $post = true)
