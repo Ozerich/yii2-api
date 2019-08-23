@@ -26,7 +26,7 @@ class ArrayResponse extends BaseResponse
 
             if (is_array($this->dtoClassParams)) {
                 foreach ($this->dtoClassParams as $param => $value) {
-                    if (isset($model->{$param})) {
+                    if (property_exists($model, $param)) {
                         $model->{$param} = $value;
                     }
                 }
