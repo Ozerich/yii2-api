@@ -20,6 +20,8 @@ class JwtAuth extends AuthMethod
                 if (!$allowGuest) {
                     $this->handleFailure($response);
                     return null;
+                } else{
+                    return true;
                 }
             }
             return $identity;
